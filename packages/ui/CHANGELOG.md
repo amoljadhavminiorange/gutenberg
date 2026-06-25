@@ -5,6 +5,7 @@
 ### New Features
 
 -   Add `Skeleton` component ([#79671](https://github.com/WordPress/gutenberg/pull/79671)).
+-   Add a `Menu` component. ([#79560](https://github.com/WordPress/gutenberg/pull/79560))
 
 ### Enhancements
 
