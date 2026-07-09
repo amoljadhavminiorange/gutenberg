@@ -39,14 +39,6 @@ const LinkItem = forwardRef< Element, LinkItemProps >( function MenuLinkItem(
 			}
 		/>
 	) : null;
-	const itemSuffix = externalLinkIndicator ? (
-		<>
-			{ suffix }
-			{ externalLinkIndicator }
-		</>
-	) : (
-		suffix
-	);
 	const { contentContextValue, itemAriaProps } = useItemContent( children, {
 		'aria-describedby': ariaDescribedBy,
 		'aria-label': ariaLabel,
@@ -69,7 +61,11 @@ const LinkItem = forwardRef< Element, LinkItemProps >( function MenuLinkItem(
 			) }
 		>
 			<MenuItemContentContext.Provider value={ contentContextValue }>
-				<ItemContent prefix={ prefix } suffix={ itemSuffix }>
+				<ItemContent
+					labelSuffix={ externalLinkIndicator }
+					prefix={ prefix }
+					suffix={ suffix }
+				>
 					{ children }
 				</ItemContent>
 			</MenuItemContentContext.Provider>

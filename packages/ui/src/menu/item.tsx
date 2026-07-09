@@ -6,6 +6,7 @@ import {
 	isValidElement,
 	useId,
 } from '@wordpress/element';
+import type { ReactNode } from 'react';
 import resetStyles from '../utils/css/resets.module.css';
 import styles from './style.module.css';
 import { MenuItemContentContext } from './context';
@@ -108,16 +109,65 @@ function useItemContent(
 	};
 }
 
+function getItemChildrenWithLabelSuffix(
+	children: ItemProps[ 'children' ],
+	labelSuffix?: ReactNode
+) {
+	const { hasStructuredContent } = getStructuredItemContent( children );
+
+	if ( ! hasStructuredContent ) {
+		const itemLabel = <ItemLabel>{ children }</ItemLabel>;
+
+		return labelSuffix ? (
+			<span className={ styles[ 'item-label-line' ] }>
+				{ itemLabel }
+				{ labelSuffix }
+			</span>
+		) : (
+			itemLabel
+		);
+	}
+
+	if ( ! labelSuffix ) {
+		return children;
+	}
+
+	let didAppendLabelSuffix = false;
+
+	return Children.toArray( children ).map( ( child, index ) => {
+		if (
+			! didAppendLabelSuffix &&
+			isValidElement( child ) &&
+			child.type === ItemLabel
+		) {
+			didAppendLabelSuffix = true;
+
+			return (
+				<span
+					key={ child.key ?? `item-label-line-${ index }` }
+					className={ styles[ 'item-label-line' ] }
+				>
+					{ child }
+					{ labelSuffix }
+				</span>
+			);
+		}
+
+		return child;
+	} );
+}
+
 function ItemContent( {
 	children,
+	labelSuffix,
 	prefix,
 	suffix,
-}: Pick< ItemProps, 'children' | 'prefix' | 'suffix' > ) {
-	const itemChildren = getStructuredItemContent( children )
-		.hasStructuredContent ? (
-		children
-	) : (
-		<ItemLabel>{ children }</ItemLabel>
+}: Pick< ItemProps, 'children' | 'prefix' | 'suffix' > & {
+	labelSuffix?: ReactNode;
+} ) {
+	const itemChildren = getItemChildrenWithLabelSuffix(
+		children,
+		labelSuffix
 	);
 
 	return (

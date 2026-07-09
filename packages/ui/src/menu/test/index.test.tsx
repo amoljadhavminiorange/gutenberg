@@ -9,6 +9,18 @@ function queryItemPrefix( item: HTMLElement ) {
 	return item.querySelector( '.style-item-prefix' );
 }
 
+function queryItemSuffix( item: HTMLElement ) {
+	return item.querySelector( '.style-item-suffix' );
+}
+
+function queryItemLabelLine( item: HTMLElement ) {
+	return item.querySelector( '.style-item-label-line' );
+}
+
+function queryExternalLinkIndicator( element: Element | null ) {
+	return element?.querySelector( '.style-external-link-indicator' );
+}
+
 describe( 'Menu', () => {
 	it( 'opens from the trigger and exposes menu semantics', async () => {
 		const user = userEvent.setup();
@@ -192,6 +204,7 @@ describe( 'Menu', () => {
 						href="https://developer.wordpress.org"
 						openInNewTab
 						rel="nofollow"
+						suffix="Docs"
 					>
 						Developer resources
 					</Menu.LinkItem>
@@ -225,11 +238,23 @@ describe( 'Menu', () => {
 		expect(
 			screen.getAllByLabelText( '(opens in a new tab)' )
 		).toHaveLength( 3 );
+		const itemWithSuffix = screen.getByRole( 'menuitem', {
+			name: 'Developer resources (opens in a new tab)',
+		} );
+		const itemWithSuffixLabelLine = queryItemLabelLine( itemWithSuffix );
+		const itemWithSuffixSuffix = queryItemSuffix( itemWithSuffix );
+
+		expect( itemWithSuffix ).toHaveAttribute( 'rel', 'nofollow' );
+		expect( itemWithSuffixLabelLine ).toHaveTextContent(
+			'Developer resources'
+		);
 		expect(
-			screen.getByRole( 'menuitem', {
-				name: 'Developer resources (opens in a new tab)',
-			} )
-		).toHaveAttribute( 'rel', 'nofollow' );
+			queryExternalLinkIndicator( itemWithSuffixLabelLine )
+		).toBeVisible();
+		expect( itemWithSuffixSuffix ).toHaveTextContent( 'Docs' );
+		expect(
+			queryExternalLinkIndicator( itemWithSuffixSuffix )
+		).not.toBeInTheDocument();
 		expect(
 			screen.getByRole( 'menuitem', { name: 'WordPress project' } )
 		).not.toHaveAttribute( 'aria-labelledby' );
