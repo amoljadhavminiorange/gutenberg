@@ -339,6 +339,24 @@ async function runPushGitChangesStep( {
 }
 
 /**
+ * Validates package contents before publishing packages to npm.
+ *
+ * @param {WPPackagesConfig} config Command config.
+ */
+async function runPackageContentsValidationStep( {
+	abortMessage,
+	gitWorkingDirectoryPath,
+} ) {
+	await runStep( 'Validating package contents', abortMessage, async () => {
+		log( '>> Validating package contents with npm pack dry-run checks.' );
+		await command( 'npm run lint:package-contents', {
+			cwd: gitWorkingDirectoryPath,
+			stdio: 'inherit',
+		} );
+	} );
+}
+
+/**
  * Publishes all changed packages to npm.
  *
  * @param {WPPackagesConfig} config Command config.
@@ -346,6 +364,7 @@ async function runPushGitChangesStep( {
  * @return {?string} The optional commit's hash when packages published to npm.
  */
 async function publishPackagesToNpm( {
+	abortMessage,
 	distTag,
 	gitWorkingDirectoryPath,
 	interactive,
@@ -389,6 +408,11 @@ async function publishPackagesToNpm( {
 			}
 		);
 
+		await runPackageContentsValidationStep( {
+			abortMessage,
+			gitWorkingDirectoryPath,
+		} );
+
 		log( '>> Publishing modified packages to npm.' );
 		await command(
 			`npx lerna publish from-package --dist-tag ${ distTag } ${ yesFlag } ${ noVerifyAccessFlag }`,
@@ -398,6 +422,11 @@ async function publishPackagesToNpm( {
 			}
 		);
 	} else if ( [ 'bugfix', 'wp' ].includes( releaseType ) ) {
+		await runPackageContentsValidationStep( {
+			abortMessage,
+			gitWorkingDirectoryPath,
+		} );
+
 		log( '>> Publishing modified packages to npm.' );
 		try {
 			await command(
@@ -435,6 +464,11 @@ async function publishPackagesToNpm( {
 				stdio: 'inherit',
 			}
 		);
+
+		await runPackageContentsValidationStep( {
+			abortMessage,
+			gitWorkingDirectoryPath,
+		} );
 
 		log( '>> Publishing modified packages to npm.' );
 		try {

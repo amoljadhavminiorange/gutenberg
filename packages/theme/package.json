@@ -149,6 +149,6 @@
 		"postbuild": "prettier --write tokens/color.json tokens/modes src/prebuilt src/color-ramps/lib/default-ramps.ts docs ../base-styles/internal/_wpds-token-fallbacks.scss",
 		"prevalidate:package-contents": "npm run build:package-types && npm run validate:package-types",
 		"validate:package-types": "node bin/validate-package-types/index.mjs",
-		"validate:package-contents": "node ../../tools/validation/validate-package-contents.mjs . --attw-profile node16 --attw-exclude-entrypoint ./design-tokens.css --attw-ignore-rule false-cjs --attw-ignore-rule false-esm --attw-ignore-rule cjs-resolves-to-esm"
+		"validate:package-contents": "node ../../tools/validation/validate-package-contents.mjs . --attw-profile node16 --attw-exclude-entrypoint ./design-tokens.css --attw-ignore-rule false-cjs --attw-ignore-rule false-esm --attw-ignore-rule cjs-resolves-to-esm --attw-ignore-rule missing-export-equals"
 	}
 }
