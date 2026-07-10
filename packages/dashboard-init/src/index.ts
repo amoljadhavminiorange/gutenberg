@@ -6,13 +6,21 @@ import { store as coreStore } from '@wordpress/core-data';
 import { __ } from '@wordpress/i18n';
 
 /**
- * Register the widget-modules discovery entity before the dashboard renders,
- * so the stage's `getEntityRecords` read resolves and feeds the records to
+ * Internal dependencies
+ */
+import { registerDashboardFieldTypes } from './field-types';
+
+/**
+ * Prepares the dashboard page before it renders: registers the page's
+ * field types and the widget-modules discovery entity, so the stage's
+ * `getEntityRecords` read resolves and feeds the records to
  * `useWidgetTypes`.
  *
  * This function is mandatory - all init modules must export 'init'.
  */
 export async function init() {
+	registerDashboardFieldTypes();
+
 	if ( select( coreStore ).getEntityConfig( 'root', 'widgetModule' ) ) {
 		return;
 	}

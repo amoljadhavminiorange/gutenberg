@@ -34,7 +34,15 @@
 	"dependencies": {
 		"@wordpress/core-data": "file:../core-data",
 		"@wordpress/data": "file:../data",
-		"@wordpress/i18n": "file:../i18n"
+		"@wordpress/dataviews": "file:../dataviews",
+		"@wordpress/element": "file:../element",
+		"@wordpress/i18n": "file:../i18n",
+		"@wordpress/icons": "file:../icons",
+		"@wordpress/ui": "file:../ui",
+		"@wordpress/widget-primitives": "file:../widget-primitives"
+	},
+	"devDependencies": {
+		"@types/react": "^18.3.27"
 	},
 	"publishConfig": {
 		"access": "public"

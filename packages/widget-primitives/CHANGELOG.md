@@ -12,6 +12,9 @@
 
 ### Enhancements
 
+-   Expose the package as a WordPress script module (`wpScriptModuleExports`),
+    so page bundles and init modules resolve one shared instance and the
+    field type registry is page-wide.
 -   Widen React peer dependency ranges to `^18 || ^19` to support both React 18 and React 19 environments ([#80024](https://github.com/WordPress/gutenberg/pull/80024)).
 -   `WidgetAttributeField`: add optional `relevance` hint (`'high' | 'low'`)
     marking attributes a host may promote to a prominent surface.

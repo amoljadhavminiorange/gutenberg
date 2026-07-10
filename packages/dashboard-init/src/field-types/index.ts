@@ -7,7 +7,7 @@ import type { FieldTypeDefinition } from '@wordpress/widget-primitives';
 /**
  * Internal dependencies
  */
-import { LocationControl } from './location-control';
+import { LocationControl } from '../components/location-control';
 
 /*
  * The field type vocabulary the dashboard page provides beyond DataViews'
