@@ -15,6 +15,7 @@ import PlaylistTrackEdit from '../edit';
 import { PlaylistContext } from '../../playlist/context';
 
 let mockMediaPlaceholderProps;
+let mockMediaReplaceFlowProps;
 
 jest.mock( '@wordpress/block-editor', () => ( {
 	BlockControls: ( { children } ) => <div>{ children }</div>,
@@ -24,7 +25,10 @@ jest.mock( '@wordpress/block-editor', () => ( {
 		mockMediaPlaceholderProps = props;
 		return <div />;
 	},
-	MediaReplaceFlow: () => <div />,
+	MediaReplaceFlow: ( props ) => {
+		mockMediaReplaceFlowProps = props;
+		return <div />;
+	},
 	MediaUpload: ( { render: renderMediaUpload } ) =>
 		renderMediaUpload( { open: jest.fn() } ),
 	MediaUploadCheck: ( { children } ) => <div>{ children }</div>,
@@ -110,6 +114,7 @@ describe( 'PlaylistTrackEdit', () => {
 
 	beforeEach( () => {
 		mockMediaPlaceholderProps = undefined;
+		mockMediaReplaceFlowProps = undefined;
 		replaceBlocks = jest.fn();
 		useDispatch.mockReturnValue( {
 			createErrorNotice: jest.fn(),
@@ -176,6 +181,17 @@ describe( 'PlaylistTrackEdit', () => {
 		} );
 
 		expect( setCurrentTrackClientId ).not.toHaveBeenCalled();
+	} );
+
+	it( 'preserves the current track source when a replacement upload fails', () => {
+		const { setAttributes } = renderEdit();
+
+		mockMediaReplaceFlowProps.onSelect();
+
+		expect( setAttributes ).toHaveBeenCalledTimes( 1 );
+		expect( setAttributes.mock.calls[ 0 ][ 0 ] ).not.toHaveProperty(
+			'src'
+		);
 	} );
 
 	it( 'replaces an empty track placeholder with multiple selected tracks', () => {
