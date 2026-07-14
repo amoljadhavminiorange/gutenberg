@@ -1,0 +1,1 @@
+import{u as e}from"./use-memo-one.esm-CF-RMdlW.js";import{d as o}from"./index-D6OBgHjj.js";import{r as s}from"./iframe-B0Vh_Bq2.js";function useDebounce(r,m,n){const u=e(()=>o(r,m??0,n),[r,m,n?.leading,n?.trailing,n?.maxWait]);return s.useEffect(()=>()=>u.cancel(),[u]),u}export{useDebounce as u};

@@ -1,0 +1,1 @@
+import{a as s,b as u,c as a,d as r}from"./setYear-DsigpPAW.js";function subDays(u,a,r){return s(u,-a,r)}function subMonths(s,a,r){return u(s,-a,r)}function subWeeks(s,u,r){return a(s,-u,r)}function subYears(s,u,a){return r(s,-u,a)}export{subYears as a,subWeeks as b,subDays as c,subMonths as s};
